@@ -8,7 +8,7 @@ ntfy connection types and actions for [Umbraco Automate](https://github.com/umbr
 
 ## What is ntfy?
 
-[ntfy](https://ntfy.sh) (pronounced "notify") is a simple HTTP-based pub-sub notification service. You publish to a topic, and anyone subscribed to that topic — via the mobile app, web app, or desktop — receives the notification. It can be used against the public `ntfy.sh` server or against a self-hosted instance.
+[ntfy](https://ntfy.sh) (pronounced "notify") is a simple HTTP-based pub-sub notification service. You publish to a topic, and anyone subscribed to that topic, via the mobile app, web app, or desktop, receives the notification. It can be used against the public `ntfy.sh` server or against a self-hosted instance.
 
 ## What can this be used for?
 
@@ -37,18 +37,18 @@ This package registers **two** connection types, so you can pick the right one p
 
 Both connection types let you set:
 
-- **Topic** — the ntfy topic to publish to.
-- **Server URL** — optional. Overrides the globally configured server for this connection. Leave blank to use the default.
+- **Topic**: the ntfy topic to publish to.
+- **Server URL**: optional. Overrides the globally configured server for this connection. Leave blank to use the default.
 
 The authenticated connection type additionally has:
 
-- **Access Token** — sent as an `Authorization: Bearer` header. Stored as a sensitive value and masked in the back office.
+- **Access Token**: sent as an `Authorization: Bearer` header. Stored as a sensitive value and masked in the back office.
 
 ## Setup
 
 ### 1. (Optional) Configure a default server
 
-By default, connections publish to the public `https://ntfy.sh` server. If you self-host ntfy, set a default server in your `appsettings.json` (or `appsettings.Production.json`) — individual connections can still override this with their own Server URL:
+By default, connections publish to the public `https://ntfy.sh` server. If you self-host ntfy, set a default server in your `appsettings.json` (or `appsettings.Production.json`); individual connections can still override this with their own Server URL:
 
 ```json
 {
@@ -69,7 +69,7 @@ By default, connections publish to the public `https://ntfy.sh` server. If you s
 1. Go to **Automate → Connections** and create a new **ntfy** or **ntfy (Authenticated)** connection, depending on whether the topic is protected.
 2. Give the connection a name and enter the **Topic** (and an **Access Token** if using the authenticated type).
 3. Optionally override the **Server URL** for this connection.
-4. Click **Test connection** to verify. This performs a lightweight reachability check against the topic — it does not publish a visible notification, but note that it checks read access, which on strictly access-controlled self-hosted servers can differ from the write access actually needed to publish.
+4. Click **Test connection** to verify. This performs a lightweight reachability check against the topic: it does not publish a visible notification, but note that it checks read access, which on strictly access-controlled self-hosted servers can differ from the write access actually needed to publish.
 
 **Tip:** You can create multiple connections, with different topics, to send notifications to different channels.
 
