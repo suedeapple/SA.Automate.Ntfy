@@ -1,9 +1,6 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path=".github/CONTRIBUTING.md" />
-    <File Path=".github/ISSUE_TEMPLATE/bug.yml" />
-    <File Path=".github/ISSUE_TEMPLATE/config.yml" />
-    <File Path=".github/ISSUE_TEMPLATE/feature_request.yml" />
     <File Path=".github/README.md" />
     <File Path="LICENSE" />
     <File Path="umbraco-marketplace.json" />
