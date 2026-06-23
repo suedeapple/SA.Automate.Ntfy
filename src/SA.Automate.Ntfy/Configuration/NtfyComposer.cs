@@ -20,14 +20,12 @@ public class NtfyComposer : IComposer
         builder.Services.AddOptions<NtfySettings>()
             .BindConfiguration(NtfySettings.SectionName);
 
-        // Register both ntfy connection types so they appear in Umbraco Automate connections
+        // Register the ntfy connection type so it appears in Umbraco Automate connections
         builder.WithCollectionBuilder<ConnectionTypeCollectionBuilder>()
-            .Add<NtfyConnectionType>()
-            .Add<NtfyAuthConnectionType>();
+            .Add<NtfyConnectionType>();
 
-        // Register the Send Notification actions so they are available in Umbraco Automate workflows
+        // Register the Send Notification action so it is available in Umbraco Automate workflows
         builder.WithCollectionBuilder<ActionCollectionBuilder>()
-            .Add<SendNotificationAction>()
-            .Add<SendAuthenticatedNotificationAction>();
+            .Add<SendNotificationAction>();
     }
 }

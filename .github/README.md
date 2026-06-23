@@ -28,27 +28,18 @@ No further setup required. The composer registers itself automatically via Umbra
 
 ## Connection types
 
-This package registers **two** connection types, so you can pick the right one per topic:
-
-| Connection type | Use for |
-|---|---|
-| **ntfy** | Public, unauthenticated topics (e.g. on `ntfy.sh`, or a self-hosted server with open ACLs). |
-| **ntfy (Authenticated)** | Protected topics that require an access token. |
-
-Both connection types let you set:
+This package registers a single **ntfy** connection type, used for both public and protected topics:
 
 - **Topic**: the ntfy topic to publish to.
 - **Server URL**: optional. Overrides the globally configured server for this connection. Leave blank to use the default.
-
-The authenticated connection type additionally has:
-
-- **Access Token**: sent as an `Authorization: Bearer` header. Stored as a sensitive value and masked in the back office.
+- **Access Token**: optional. Leave blank for public topics. If set, it's sent as an `Authorization: Bearer` header. Stored as a sensitive value and masked in the back office.
+- **Use default access token**: optional toggle. If enabled and no Access Token is set above, falls back to the default access token configured in `appsettings.json`. Leave off for public topics, so no Authorization header is ever sent.
 
 ## Setup
 
-### 1. (Optional) Configure a default server
+### 1. (Optional) Configure defaults
 
-By default, connections publish to the public `https://ntfy.sh` server. If you self-host ntfy, set a default server in your `appsettings.json` (or `appsettings.Production.json`); individual connections can still override this with their own Server URL:
+By default, connections publish to the public `https://ntfy.sh` server with no access token. If you self-host ntfy, or want a shared access token, set defaults in your `appsettings.json` (or `appsettings.Production.json`); individual connections can still override the server URL, and only use the default token if they explicitly enable **Use default access token**:
 
 ```json
 {
@@ -56,7 +47,8 @@ By default, connections publish to the public `https://ntfy.sh` server. If you s
     "Automate": {
       "Providers": {
         "SA.Automate.Ntfy": {
-          "ServerUrl": "https://ntfy.example.com"
+          "ServerUrl": "https://ntfy.example.com",
+          "AccessToken": "tk_..."
         }
       }
     }
@@ -66,8 +58,8 @@ By default, connections publish to the public `https://ntfy.sh` server. If you s
 
 ### 2. Create the connection in the backoffice
 
-1. Go to **Automate → Connections** and create a new **ntfy** or **ntfy (Authenticated)** connection, depending on whether the topic is protected.
-2. Give the connection a name and enter the **Topic** (and an **Access Token** if using the authenticated type).
+1. Go to **Automate → Connections** and create a new **ntfy** connection.
+2. Give the connection a name and enter the **Topic** (and an **Access Token** if the topic is protected, or enable **Use default access token** to reuse the one configured in `appsettings.json`).
 3. Optionally override the **Server URL** for this connection.
 4. Click **Test connection** to verify. This performs a lightweight reachability check against the topic: it does not publish a visible notification, but note that it checks read access, which on strictly access-controlled self-hosted servers can differ from the write access actually needed to publish.
 
@@ -75,13 +67,15 @@ By default, connections publish to the public `https://ntfy.sh` server. If you s
 
 ## Usage
 
-Add the **Send ntfy Notification** action (for public topics) or **Send ntfy Notification (Authenticated)** action (for protected topics) to any automation and select the matching connection. Available fields:
+Add the **Send ntfy Notification** action to any automation and select the connection to use. Available fields:
 
 | Field | Description |
 |---|---|
 | Title | An optional title to display above the message. Supports `${ binding }` expressions. |
 | Message | The notification message. Supports `${ binding }` expressions. |
 | Tags | A comma-separated list of tags or emoji shortcodes, e.g. `warning,skull`. See [ntfy's tag list](https://docs.ntfy.sh/publish/#tags-emojis). Supports `${ binding }` expressions. |
+| URL | An optional URL to open via a button on the notification. Supports `${ binding }` expressions. |
+| URL Title | The label of the button shown for the URL above. Defaults to `Open` if left blank. Supports `${ binding }` expressions. |
 | Priority | The priority of the notification: `1` (min), `2` (low), `3` (default), `4` (high), `5` (max). Defaults to `3`. |
 
 The action outputs an **Id** and **Time**, which can be referenced via bindings in later workflow steps.

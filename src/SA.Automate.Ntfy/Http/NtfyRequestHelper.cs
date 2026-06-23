@@ -29,6 +29,18 @@ internal static class NtfyRequestHelper
     }
 
     /// <summary>
+    /// Resolves the effective access token: a per-connection token wins, then the globally configured
+    /// default if the connection has opted in to it, otherwise no token (e.g. for public topics).
+    /// </summary>
+    public static string? ResolveAccessToken(string? connectionOverride, bool useDefaultAccessToken, string? globalDefault)
+    {
+        if (!string.IsNullOrWhiteSpace(connectionOverride))
+            return connectionOverride;
+
+        return useDefaultAccessToken ? globalDefault : null;
+    }
+
+    /// <summary>
     /// Performs a lightweight reachability check against a topic without publishing a visible
     /// notification, used to power the back office "Test connection" action.
     /// Note: this checks read access, which on strictly ACL'd self-hosted servers can differ
@@ -96,6 +108,20 @@ internal static class NtfyRequestHelper
         if (clampedPriority != 3)
         {
             payload["priority"] = clampedPriority;
+        }
+
+        if (!string.IsNullOrWhiteSpace(settings.Url))
+        {
+            var label = string.IsNullOrWhiteSpace(settings.UrlTitle) ? "Open" : settings.UrlTitle;
+            payload["actions"] = new[]
+            {
+                new Dictionary<string, object>
+                {
+                    ["action"] = "view",
+                    ["label"] = label,
+                    ["url"] = settings.Url
+                }
+            };
         }
 
         using var request = new HttpRequestMessage(HttpMethod.Post, $"{serverUrl}/")

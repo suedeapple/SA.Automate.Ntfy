@@ -8,8 +8,8 @@ using Umbraco.Automate.Core.Actions;
 namespace SA.Automate.Ntfy.Actions;
 
 /// <summary>
-/// Umbraco Automate action that sends a notification to a public, unauthenticated ntfy topic.
-/// Supports optional title, tags, and priority.
+/// Umbraco Automate action that sends a notification to an ntfy topic, using the connection's
+/// access token if one is configured. Supports optional title, tags, and priority.
 /// </summary>
 [Action("ntfy.SendNotification", "Send ntfy Notification",
     Description = "Sends an ntfy Notification",
@@ -58,16 +58,18 @@ public class SendNotificationAction : ActionBase<SendNotificationSettings, SendN
         {
             return ActionResult.Failed(
                 new ArgumentException("ntfy connection settings are not configured properly."),
-                StepRunErrorCategory.Authentication);
+                StepRunErrorCategory.Validation);
         }
 
         try
         {
             var httpClient = _httpClientFactory.CreateClient();
             var serverUrl = NtfyRequestHelper.ResolveServerUrl(connectionSettings.ServerUrl, _ntfySettings.CurrentValue.ServerUrl);
+            var accessToken = NtfyRequestHelper.ResolveAccessToken(
+                connectionSettings.AccessToken, connectionSettings.UseDefaultAccessToken, _ntfySettings.CurrentValue.AccessToken);
 
             var result = await NtfyRequestHelper.PublishAsync(
-                httpClient, serverUrl, connectionSettings.Topic, null, settings, cancellationToken);
+                httpClient, serverUrl, connectionSettings.Topic, accessToken, settings, cancellationToken);
 
             if (!result.IsSuccess)
             {

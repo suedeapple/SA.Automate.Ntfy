@@ -16,4 +16,11 @@ public class NtfySettings
     /// Defaults to the public ntfy.sh server. Point this at a self-hosted instance if you run your own.
     /// </summary>
     public string ServerUrl { get; set; } = "https://ntfy.sh";
+
+    /// <summary>
+    /// An optional default access token, used by connections that have "Use default access token"
+    /// enabled and no Access Token of their own configured. Leave unset if you don't want a shared
+    /// fallback token (e.g. when every connection targets a public topic).
+    /// </summary>
+    public string? AccessToken { get; set; }
 }
