@@ -13,7 +13,12 @@ public class SendNotificationSettings
     public string? Title { get; set; }
 
     /// <summary>The main body text of the notification. Required.</summary>
-    [Field(Label = "Message", Description = "The main content of the notification to be sent. Supports bindings.", SortOrder = 1, SupportsBindings = true)]
+    [Field(Label = "Message", 
+        Description = "The main content of the notification to be sent. Supports bindings.",
+        SortOrder = 1,
+        SupportsBindings = true,
+        EditorUiAlias = "Umb.PropertyEditorUi.TextArea",
+        EditorConfig = """[{ "alias": "rows", "value": 4 }]""")]
     public string Message { get; set; } = string.Empty;
 
     /// <summary>
