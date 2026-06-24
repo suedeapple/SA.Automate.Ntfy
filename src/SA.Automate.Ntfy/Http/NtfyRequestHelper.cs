@@ -104,22 +104,27 @@ internal static class NtfyRequestHelper
         }
 
         // ntfy defaults to priority 3 (default) when omitted, so only send it when it differs
-        var clampedPriority = Math.Clamp(settings.Priority, 1, 5);
-        if (clampedPriority != 3)
+        var priority = MapPriority(settings.Priority);
+        if (priority != 3)
         {
-            payload["priority"] = clampedPriority;
+            payload["priority"] = priority;
         }
 
         if (!string.IsNullOrWhiteSpace(settings.Url))
         {
-            var label = string.IsNullOrWhiteSpace(settings.UrlTitle) ? "Open" : settings.UrlTitle;
+            payload["click"] = settings.Url;
+        }
+
+        if (!string.IsNullOrWhiteSpace(settings.ActionButtonUrl))
+        {
+            var label = string.IsNullOrWhiteSpace(settings.ActionButtonLabel) ? "Open" : settings.ActionButtonLabel;
             payload["actions"] = new[]
             {
                 new Dictionary<string, object>
                 {
                     ["action"] = "view",
                     ["label"] = label,
-                    ["url"] = settings.Url
+                    ["url"] = settings.ActionButtonUrl
                 }
             };
         }
@@ -141,6 +146,18 @@ internal static class NtfyRequestHelper
         var parsed = JsonSerializer.Deserialize<NtfyApiResponse>(body);
         return new NtfyPublishResult(true, parsed, body, response.StatusCode);
     }
+
+    /// <summary>
+    /// Maps the "Priority" dropdown's selected label to ntfy's numeric priority scale.
+    /// </summary>
+    private static int MapPriority(string? priority) => priority switch
+    {
+        "Min" => 1,
+        "Low" => 2,
+        "High" => 4,
+        "Max" => 5,
+        _ => 3
+    };
 
     private static void ApplyAuthHeader(HttpRequestHeaders headers, string? accessToken)
     {

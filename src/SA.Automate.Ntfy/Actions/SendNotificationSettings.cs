@@ -24,23 +24,31 @@ public class SendNotificationSettings
     public string? Tags { get; set; }
 
     /// <summary>
+    /// An optional URL opened when the notification itself is tapped (ntfy's "click" action).
+    /// </summary>
+    [Field(Label = "URL", Description = "An optional URL to open when the notification itself is tapped. Supports bindings.", SupportsBindings = true, SortOrder = 3)]
+    public string? Url { get; set; }
+
+    /// <summary>
     /// An optional URL to attach as a "view" action button on the notification.
     /// </summary>
-    [Field(Label = "URL", Description = "An optional URL to open via a button on the notification. Supports bindings.", SupportsBindings = true, SortOrder = 3)]
-    public string? Url { get; set; }
+    [Field(Label = "Action Button URL", Description = "An optional URL to open via a button on the notification. Supports bindings.", SupportsBindings = true, SortOrder = 4)]
+    public string? ActionButtonUrl { get; set; }
 
     /// <summary>
     /// The label of the action button shown for the URL above. Defaults to "Open" if left blank.
     /// </summary>
-    [Field(Label = "URL Title", Description = "The label of the button shown for the URL above. Defaults to \"Open\" if left blank. Supports bindings.", SupportsBindings = true, SortOrder = 4)]
-    public string? UrlTitle { get; set; }
+    [Field(Label = "Action Button Label", Description = "The label of the button shown for the Action Button URL above. Defaults to \"Open\" if left blank. Supports bindings.", SupportsBindings = true, SortOrder = 5)]
+    public string? ActionButtonLabel { get; set; }
 
-    
     /// <summary>
-    /// Controls the urgency of the notification.
-    /// 1 = min, 2 = low, 3 = default, 4 = high, 5 = max.
-    /// Defaults to 3 (default).
+    /// Controls the urgency of the notification. Defaults to "Default".
     /// </summary>
-    [Field(Label = "Priority", Description = "Set the notification priority level. Values: 1 (min), 2 (low), 3 (default), 4 (high), 5 (max).", SortOrder = 5)]
-    public int Priority { get; set; } = 3;
+    [Field(
+        Label = "Priority",
+        Description = "Set the notification priority level.",
+        SortOrder = 6,
+        EditorUiAlias = "Umb.PropertyEditorUi.Dropdown",
+        EditorConfig = """[{ "alias": "items", "value": ["Min", "Low", "Default", "High", "Max"] }]""")]
+    public string Priority { get; set; } = "Default";
 }

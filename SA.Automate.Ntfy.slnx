@@ -4,5 +4,6 @@
     <File Path=".github/README.md" />
     <File Path="LICENSE" />
     <File Path="umbraco-marketplace.json" />
+    <Project Path="src/SA.Automate.Ntfy/SA.Automate.Ntfy.csproj" />
   </Folder>
 </Solution>

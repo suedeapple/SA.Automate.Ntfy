@@ -45,7 +45,7 @@ public sealed class NtfyConnectionSettings
     /// public topics so no Authorization header is ever sent.
     /// </summary>
     [Field(
-        Label = "Use default access token",
+        Label = "Use Default Access Token",
         Description = "If enabled and no Access Token is set above, falls back to the globally configured default access token in appsettings.json. Leave off for public topics.",
         SortOrder = 4)]
     public bool UseDefaultAccessToken { get; set; }

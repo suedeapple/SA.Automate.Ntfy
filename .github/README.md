@@ -74,9 +74,10 @@ Add the **Send ntfy Notification** action to any automation and select the conne
 | Title | An optional title to display above the message. Supports `${ binding }` expressions. |
 | Message | The notification message. Supports `${ binding }` expressions. |
 | Tags | A comma-separated list of tags or emoji shortcodes, e.g. `warning,skull`. See [ntfy's tag list](https://docs.ntfy.sh/publish/#tags-emojis). Supports `${ binding }` expressions. |
-| URL | An optional URL to open via a button on the notification. Supports `${ binding }` expressions. |
-| URL Title | The label of the button shown for the URL above. Defaults to `Open` if left blank. Supports `${ binding }` expressions. |
-| Priority | The priority of the notification: `1` (min), `2` (low), `3` (default), `4` (high), `5` (max). Defaults to `3`. |
+| URL | An optional URL to open when the notification itself is tapped. Supports `${ binding }` expressions. |
+| Action Button URL | An optional URL to open via a button on the notification. Supports `${ binding }` expressions. |
+| Action Button Label | The label of the button shown for the Action Button URL above. Defaults to `Open` if left blank. Supports `${ binding }` expressions. |
+| Priority | The priority of the notification: `Min`, `Low`, `Default`, `High`, or `Max`. Defaults to `Default`. |
 
 The action outputs an **Id** and **Time**, which can be referenced via bindings in later workflow steps.
 
