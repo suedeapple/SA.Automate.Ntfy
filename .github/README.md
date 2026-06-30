@@ -85,7 +85,7 @@ The action outputs an **Id** and **Time**, which can be referenced via bindings 
 
 | Package version | Umbraco Automate | Umbraco CMS |
 |---|---|---|
-| 1.x | 17.x | 17.x |
+| 1.x | 17.x – 18.x | 17.x – 18.x |
 
 ## Links
 
